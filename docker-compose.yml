@@ -1,0 +1,28 @@
+version: "3.8"
+name: "calliope"
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: calliope-db
+    env_file:
+      - .env
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "1433:1433"
+    volumes:
+      - db:/var/opt/mssql
+    networks:
+      - calliope-network
+
+networks:
+  calliope-network:
+    driver: bridge
+    name: calliope-network
+
+volumes:
+  db:
+    driver: local
+    name: calliope-db
